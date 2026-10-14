@@ -194,9 +194,9 @@ class TaskServiceTest {
 
         @Test
         void sinResponsable_filtraYOrdena_porFechaNullsLast() {
-            Task sin10 = tareaCon(4L, TaskStatus.TODO, null, HOY.plusDays(10));
+            Task sin10 = tareaCon(4L, TaskStatus.IN_PROGRESS, null, HOY.plusDays(10));
             Task conAssignee = tareaCon(5L, TaskStatus.TODO, 5L, HOY.plusDays(1));
-            Task sinNoDate = tareaCon(6L, TaskStatus.TODO, null, null);
+            Task sinNoDate = tareaCon(6L, TaskStatus.DONE, null, null);
             Task sin2 = tareaCon(7L, TaskStatus.TODO, null, HOY.plusDays(2));
             when(repository.findAll()).thenReturn(List.of(sin10, conAssignee, sinNoDate, sin2));
 
