@@ -111,6 +111,17 @@ public class TaskService {
                 .toList();
     }
 
+    /**
+     * Tareas vencidas de todos los proyectos (GET /tasks/overdue). La regla es la del
+     * dominio, Task.estaVencida(); el orden, TaskOrders.POR_FECHA: la más vencida primero.
+     */
+    public List<Task> vencidas() {
+        return repository.findAll().stream()
+                .filter(Task::estaVencida)
+                .sorted(TaskOrders.POR_FECHA)
+                .toList();
+    }
+
     /** Busca una tarea por id: delega en el repositorio y deja subir el Optional TAL CUAL. */
     public Optional<Task> buscarPorId(Long id) {
         return repository.findById(id);
@@ -120,6 +131,17 @@ public class TaskService {
     public List<Task> porPrioridad(Priority priority) {
         return repository.findAll().stream()
                 .filter(t -> t.getPriority() == priority)
+                .toList();
+    }
+
+    /**
+     * Tareas sin responsable (assigneeId == null) de todos los proyectos.
+     * Usa el predicado nombrado ReportService.SIN_ASIGNAR y el comparador TaskOrders.POR_FECHA.
+     */
+    public List<Task> sinResponsable() {
+        return repository.findAll().stream()
+                .filter(ReportService.SIN_ASIGNAR)
+                .sorted(TaskOrders.POR_FECHA)
                 .toList();
     }
 }
