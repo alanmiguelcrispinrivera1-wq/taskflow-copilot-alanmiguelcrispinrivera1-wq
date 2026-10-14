@@ -133,4 +133,15 @@ public class TaskService {
                 .filter(t -> t.getPriority() == priority)
                 .toList();
     }
+
+    /**
+     * Tareas sin responsable (assigneeId == null) de todos los proyectos.
+     * Usa el predicado nombrado ReportService.SIN_ASIGNAR y el comparador TaskOrders.POR_FECHA.
+     */
+    public List<Task> sinResponsable() {
+        return repository.findAll().stream()
+                .filter(ReportService.SIN_ASIGNAR)
+                .sorted(TaskOrders.POR_FECHA)
+                .toList();
+    }
 }
