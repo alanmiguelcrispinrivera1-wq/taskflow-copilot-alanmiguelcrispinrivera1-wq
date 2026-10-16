@@ -61,6 +61,28 @@ public class ProjectService {
     }
 
     /**
+     * Genera un resumen del proyecto: total de tareas, conteos por estado (TODO, IN_PROGRESS, DONE)
+     * y número de tareas vencidas (según Task.estaVencida()). Devuelve siempre las tres claves en el map.
+     */
+    public com.taskflow.dto.ProjectSummaryResponse resumen(Project project) {
+        List<Task> tareas = taskRepository.findByProjectId(project.getId());
+        int total = tareas.size();
+        java.util.Map<String, Integer> byStatus = new java.util.LinkedHashMap<>();
+        byStatus.put("TODO", 0);
+        byStatus.put("IN_PROGRESS", 0);
+        byStatus.put("DONE", 0);
+        int overdue = 0;
+        for (Task t : tareas) {
+            String key = t.getStatus().name();
+            byStatus.put(key, byStatus.getOrDefault(key, 0) + 1);
+            if (t.estaVencida()) {
+                overdue++;
+            }
+        }
+        return new com.taskflow.dto.ProjectSummaryResponse(project.getId(), project.getName(), total, byStatus, overdue);
+    }
+
+    /**
      * Crea un proyecto (POST): el request trae name y description; el ownerId NO es una constante
      * — se resuelve del USERNAME AUTENTICADO (el que puso el JWT en el
      * Authentication). El dueño no lo decide el cliente ni una semilla: es QUIEN llama. createdAt = hoy;
