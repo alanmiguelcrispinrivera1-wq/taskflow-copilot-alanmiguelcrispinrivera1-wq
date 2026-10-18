@@ -1,5 +1,7 @@
 # `taskflow-api` — la API REST completa
 
+**Nota**: Los ejercicios resueltos que abarcan desde el tema 7 hasta el tema 12 se encuentran en `Ejercicios-Java`
+
 El proyecto de referencia de la semana de GitHub Copilot: lo recibes **ya terminado**, en su
 versión **v3.0**, para leerlo, correrlo y trabajar sobre él con Copilot. A diferencia del resto
 del repositorio —donde cada carpeta aísla **un** concepto— aquí conviven todos a la vez, que es
