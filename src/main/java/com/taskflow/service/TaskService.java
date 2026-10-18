@@ -122,6 +122,20 @@ public class TaskService {
                 .toList();
     }
 
+    /**
+     * Busca tareas cuyo título contiene q (case-insensitive).
+     * q se recorta con strip() antes de buscar; si es nulo o vacío tras recortar, lanza
+     * TaskValidationException con el mensaje requerido por la especificación.
+     */
+    public List<Task> buscarPorTitulo(String q) throws TaskValidationException {
+        if (q == null || q.strip().isEmpty()) {
+            throw new TaskValidationException("El parámetro 'q' es obligatorio.");
+        }
+        String trimmed = q.strip();
+        List<Task> encontrados = repository.findByTitleContainingIgnoreCase(trimmed);
+        return encontrados.stream().sorted(TaskOrders.POR_TITULO).toList();
+    }
+
     /** Busca una tarea por id: delega en el repositorio y deja subir el Optional TAL CUAL. */
     public Optional<Task> buscarPorId(Long id) {
         return repository.findById(id);
